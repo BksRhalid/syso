@@ -26,7 +26,8 @@ const brancheToEmoji: { [Branche]: string } = {
 	'accidents du travail / maladies professionnelles': '☣️',
 	'assurance chômage': '💸',
 	transport: '🚌',
-	autres: '🔧'
+	autres: '🔧',
+	état: '🏛'
 }
 
 const brancheToCounterparts: { [Branche]: string } = {
@@ -41,9 +42,10 @@ const brancheToCounterparts: { [Branche]: string } = {
 		'Offre une couverture complète des maladies ou accidents du travail.',
 	'assurance chômage':
 		"Assure un revenu aux travailleurs à la recherche d'un nouvel emploi.",
-	transport:
-		"Aide à maintenir le prix d'un billet de transport en commun à un bas prix.",
-	autres: 'Autres contributions au système social.'
+	transport: "Permet de baisser le prix d'un ticket de transport en commun.",
+	autres: 'Autres contributions au système social.',
+	état:
+		"Finance l'État : Éducation, recherche, territoires, charge de la dette, défense..."
 }
 
 const brancheToLabel: { [Branche]: string } = {
