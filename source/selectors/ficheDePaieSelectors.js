@@ -42,7 +42,8 @@ export const COTISATION_BRANCHE_ORDER: Array<Branche> = [
 	'formation',
 	'logement',
 	'transport',
-	'autres'
+	'autres',
+	'état'
 ]
 
 // Used for type consistency
@@ -83,8 +84,8 @@ function brancheSelector(variable: VariableWithCotisation): Branche {
 export const mergeCotisations: (
 	Cotisation,
 	Cotisation
-) => Cotisation = mergeWithKey(
-	(key, a, b) => (key === 'montant' ? mergeWith(add, a, b) : b)
+) => Cotisation = mergeWithKey((key, a, b) =>
+	key === 'montant' ? mergeWith(add, a, b) : b
 )
 
 const variableToCotisation = (règleLocaliséeSelector: string => Règle) => (
@@ -120,11 +121,13 @@ const analysisToCotisations = (
 ): Cotisations => {
 	const variables = [
 		'contrat salarié . cotisations salariales',
+		'contrat salarié . cotisations patronales',
 		'contrat salarié . cotisations patronales'
 	]
 		.map(name => analysis.cache[name])
 		.map(pathOr([], ['explanation', 'formule', 'explanation', 'explanation']))
 		.reduce(concat, [])
+		.concat([analysis.cache['impôt . neutre']])
 
 	const cotisations = pipe(
 		groupBy(prop('dottedName')),
