@@ -835,7 +835,7 @@
   description: Notion mal définie mais reconnue par les conventions collectives et déterminant l'appartenance à une caise de retraite de base spécifique
   par défaut: non
 
-- nom: plafond sécurité sociale
+- nom: plafond sécurité sociale temps plein
   description: Le plafond de Sécurité sociale est le montant maximum des rémunérations à prendre en compte pour le calcul de certaines cotisations.
   période: mois
   formule: 3311
@@ -845,7 +845,7 @@
 - espace: contrat salarié
   nom: plafond sécurité sociale
   période: flexible
-  formule: plafond sécurité sociale * quotité de travail
+  formule: plafond sécurité sociale temps plein * quotité de travail
 
 - espace: contrat salarié
   nom: SMIC temps plein
@@ -2747,6 +2747,7 @@
 
 - espace: impôt
   nom: revenu abattu par défaut
+  période: flexible
   description: Dans le cas général, l'impôt est calculé après l'application d'un abattement forfaitaire fixe. Chacun peut néanmoins opter pour la déclaration de ses *frais réels*, qui viendront remplacer ce forfait par défaut.
   formule:
     allègement:
@@ -2792,6 +2793,17 @@
         contrat salarié . rémunération . net imposable: 4000
       valeur attendue: 7253.26
 
+- nom: revenu net de cotisations
+  période: flexible
+  formule: 
+    somme: 
+      - contrat salarié . salaire . net
+      - indépendant . revenu net de cotisations
+      - micro entreprise . revenu net de cotisations
+
+- nom: revenu net d'impôt
+  période: flexible
+  formule: revenu net de cotisations - impôt . impôt sur le revenu à payer
 
 - espace: entreprise
   nom: chiffre d'affaires
@@ -2871,7 +2883,7 @@
         alors:
           barème continu: 
             assiette: base des cotisations 
-            multiplicateur: plafond sécurité sociale
+            multiplicateur: plafond sécurité sociale temps plein
             points: 
               0: 1.5%
               1.1: 6.5%
@@ -2885,7 +2897,7 @@
     multiplication: 
       assiette: base des cotisations
       taux: 0.85%
-      plafond: 5 * plafond sécurité sociale
+      plafond: 5 * plafond sécurité sociale temps plein
 
 - espace: indépendant . cotisations . maladie
   nom: artisans commerçants
@@ -2898,7 +2910,7 @@
   formule:
     barème continu: 
       assiette: base des cotisations
-      multiplicateur: plafond sécurité sociale
+      multiplicateur: plafond sécurité sociale temps plein
       points: 
         0: 0%
         0.4: 3.16%
@@ -2916,7 +2928,7 @@
 - espace: indépendant . cotisations . maladie . artisans commerçants . part revenus élevés 
   nom: seuil
   période: flexible
-  formule: 5 * plafond sécurité sociale
+  formule: 5 * plafond sécurité sociale temps plein
 
 
 - espace: indépendant . cotisations
@@ -2999,7 +3011,7 @@
   formule:
     multiplication: 
       assiette: base des cotisations
-      plafond: plafond sécurité sociale
+      plafond: plafond sécurité sociale temps plein
       taux: 1.3%
 
       # TODO invalidité décès pour les libéraux
@@ -3036,7 +3048,7 @@
     multiplication:
       assiette: base des cotisations
       taux: 0.29%
-      plafond: plafond sécurité sociale
+      plafond: plafond sécurité sociale temps plein
      # C'est le taux pour les artisans. 
      # TODO Pour les commerçants, le taux est de 0.25%
      #
@@ -3046,17 +3058,12 @@
   formule:
     barème continu:
       assiette: base des cotisations
-      multiplicateur: plafond sécurité sociale
+      multiplicateur: plafond sécurité sociale temps plein
       points:
         0: 0%
         1.1: 0%
         1.4: 3.1% 
 
-
-- espace: indépendant 
-  nom: revenu net de cotisations
-  période: flexible
-  formule: base des cotisations - prélèvements
 
 - espace: indépendant 
   nom: revenu net de cotisations
